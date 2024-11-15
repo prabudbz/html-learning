@@ -19,50 +19,54 @@
     </style>
 </head>
 <body>
-    <script>
-        // Set up the scene, camera, and renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+    <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
 
-        // Add lighting
-        const light = new THREE.AmbientLight(0xffffff, 1); // Soft white light
-        scene.add(light);
+    // Set up the scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-        // Load the .glb file
-        const loader = new THREE.GLTFLoader();
-        loader.load(
-            './model.glb', // Path to the .glb file
-            function (gltf) {
-                scene.add(gltf.scene);
-                gltf.scene.position.set(0, 0, 0); // Adjust position if needed
-            },
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            function (error) {
-                console.error('An error occurred while loading the .glb file:', error);
-            }
-        );
+    // Add lighting
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
 
-        // Set the camera position
-        camera.position.z = 5;
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+    // Load the .glb file
+    const loader = new GLTFLoader();
+    loader.load(
+        './model.glb', // Path to the .glb file
+        function (gltf) {
+            scene.add(gltf.scene);
+            gltf.scene.position.set(0, 0, 0);
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        function (error) {
+            console.error('An error occurred while loading the .glb file:', error);
         }
-        animate();
+    );
 
-        // Adjust canvas on window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    // Set the camera position
+    camera.position.z = 5;
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Adjust canvas on window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
 </body>
 </html>
